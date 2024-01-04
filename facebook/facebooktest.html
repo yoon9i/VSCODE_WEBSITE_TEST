@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>내 웹사이트</title>
+  </head>
+  <body>
+    <!-- Facebook 시작 공간 -->
+    <script
+      async
+      defer
+      src="https://connect.facebook.net/en_US/sdk.js"
+    ></script>
+    <script>
+      window.fbAsyncInit = function () {
+        FB.init({
+          xfbml: true,
+          version: "v18.0",
+        });
+
+        FB.login(
+          function (response) {
+            console.log(response);
+          },
+          { scope: "public_profile,email,user_posts" }
+        );
+      };
+      document.addEventListener("DOMContentLoaded", function () {
+        // 클릭 이벤트를 감지하는 함수
+        function handlePostClick(event) {
+          // 클릭된 요소가 'fb-post' 클래스를 가지고 있는지 확인
+          if (event.target.classList.contains("fb-post")) {
+            // 클릭된 게시물의 URL 가져오기
+            var postUrl = event.target.dataset.href;
+
+            // 해당 URL로 이동
+            window.location.href = postUrl;
+          }
+        }
+
+        // 클릭 이벤트 리스너 추가
+        document.body.addEventListener("click", handlePostClick);
+      });
+    </script>
+
+    <div id="facebook_area" style="background: black">
+      <div class="facebook_title">
+        <h2 align="center" style="color: white">Facebook</h2>
+      </div>
+      <div class="facebook_contents" align="center" style="color: white">
+        <div style="background: #939393">
+          <!-- 상단 3개의 포스트 -->
+          <div
+            class="fb-post"
+            data-href="https://www.facebook.com/ggmwedy/posts/pfbid0T1nZk331sUfq6nSFV2CCvmiPDC2pfN7FzKT1nQJavkzKPJGHftVkrUsYe2RqEqSDl"
+            data-width="500"
+          ></div>
+          <div
+            class="fb-post"
+            data-href="https://www.facebook.com/ggmwedy/posts/pfbid02KhBDN5NCmwWE8YR5cz7yQGJmZDLYNzb9P5m7rv7DkS1QmB6u1eCC6qwRqEoJiCHhl"
+            data-width="500"
+          ></div>
+          <div
+            class="fb-post"
+            data-href="https://www.facebook.com/ggmwedy/posts/pfbid02vLkYv8c1sAzZwZxzMeqTkXKGfUp51xUQTLswFhaYU22i3R9ZEMynHgtnUrTdMoyml"
+            data-width="500"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Facebook 마지막 공간 -->
+  </body>
+</html>

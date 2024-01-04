@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>페이스북띄우기</title>
+    <script
+      async
+      defer
+      src="https://connect.facebook.net/en_US/sdk.js"
+    ></script>
+    <script>
+      window.fbAsyncInit = function () {
+        FB.init({
+          xfbml: true,
+          version: "v18.0",
+          appId: "216684361876104", // Replace with your Facebook App ID
+        });
+
+        // Fetch latest posts
+        FB.api(
+          "/your_page_id/posts",
+          { fields: "link,message", limit: 3 }, // Adjust fields and limit as needed
+          function (response) {
+            if (response && !response.error) {
+              // Update the 'data-href' attribute of each post element
+              for (let i = 0; i < response.data.length; i++) {
+                const postUrl = response.data[i].link;
+                const postElement = document.querySelectorAll(".fb-post")[i];
+                postElement.setAttribute("data-href", postUrl);
+              }
+            }
+          }
+        );
+      };
+      document.addEventListener("DOMContentLoaded", function () {
+        // 클릭 이벤트를 감지하는 함수
+        function handlePostClick(event) {
+          // 클릭된 요소가 'fb-post' 클래스를 가지고 있는지 확인
+          if (event.target.classList.contains("fb-post")) {
+            // 클릭된 게시물의 URL 가져오기
+            var postUrl = event.target.dataset.href;
+
+            // 해당 URL로 이동
+            window.location.href = postUrl;
+          }
+        }
+
+        // 클릭 이벤트 리스너 추가
+        document.body.addEventListener("click", handlePostClick);
+      });
+    </script>
+  </head>
+  <body>
+    <div id="facebook_area" style="background: black">
+      <div class="facebook_title">
+        <h2 align="center" style="color: white">Facebook</h2>
+      </div>
+      <div class="facebook_contents" align="center" style="color: white">
+        <div style="background: #939393">
+          <!-- 상단 3개의 포스트 -->
+          <div class="fb-post" data-width="500"></div>
+          <div class="fb-post" data-width="500"></div>
+          <div class="fb-post" data-width="500"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

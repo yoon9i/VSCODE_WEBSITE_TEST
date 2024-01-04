@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script
+      async
+      defer
+      crossorigin="anonymous"
+      src="https://connect.facebook.net/en_US/sdk.js"
+    ></script>
+    <script>
+      $(document).ready(function () {
+        // 함수를 호출하여 새로운 게시물 주소를 가져오고 iframe의 src를 업데이트합니다.
+        updateIframeSrc();
+
+        // 정해진 시간마다 자동으로 업데이트할 수 있도록 설정
+        setInterval(updateIframeSrc, 24 * 60 * 60 * 1000);
+      });
+
+      function updateIframeSrc() {
+        // 페이지 ID와 액세스 토큰 설정
+        var pageId = "216684361876104";
+        var accessToken =
+          "EAAWe6ZBZCdgbEBO9BHOehstvv3X0ucmk0asr3GwI7SEj6MKqnMNGqkf4XtSFFKCfYDxjyCDeRL7I7CNVbxZCeZCEZC3fGFQTgqF2XVPA2PCbV9t2Lr0n7eaz1bEFXZAOeMZBE3sZAgaDNYQx1IQeBL9QZByKig25DsO8J7KpI2CEcYO6IbLsNzXYZBBQMKmqFyDc1g8u8aGOdhRi3srRZAbeLCsAUxXiib2FZBiarDF3lK1ycFhXPsbuZAHldqfF6KGvBkQZDZD";
+
+        // Graph API 호출을 위한 엔드포인트
+        var graphApiUrl = `https://graph.facebook.com/v18.0/${pageId}/posts?access_token=${accessToken}&limit=3`;
+
+        // 최신 게시물 주소를 가져오기 위한 GET 요청
+        $.get(graphApiUrl, function (data) {
+          // 가져온 게시물 주소를 newPostUrl에 할당
+          var newPostUrl = data.data[0].permalink_url;
+
+          // 가져온 주소를 iframe의 src에 설정
+          var iframeSrc =
+            "https://www.facebook.com/plugins/post.php?href=" +
+            newPostUrl +
+            "&show_text=true";
+
+          // 각 iframe에 대해 해당하는 ID를 사용하여 src를 업데이트
+          $("#iframe1").attr("src", iframeSrc);
+          $("#iframe2").attr("src", iframeSrc);
+          $("#iframe3").attr("src", iframeSrc);
+        });
+      }
+    </script>
+    <title>iframe-auto-test</title>
+  </head>
+  <body>
+    <!-- Facebook Starting space -->
+    <div id="facebook_area" style="background: black; text-align: center">
+      <div class="facebook_title">
+        <h2 align="center" style="color: white">Facebook</h2>
+      </div>
+      <div class="facebook_contents" align="center" style="background: gray">
+        <!-- 각 iframe에 고유한 ID를 부여 -->
+        <iframe
+          id="iframe1"
+          width="550"
+          height="674"
+          style="
+            border: none;
+            overflow: hidden;
+            background: white;
+            border: 1px solid black;
+          "
+        ></iframe>
+        <iframe
+          id="iframe2"
+          width="550"
+          height="674"
+          style="
+            border: none;
+            overflow: hidden;
+            background: white;
+            border: 1px solid black;
+          "
+        ></iframe>
+        <iframe
+          id="iframe3"
+          width="550"
+          height="674"
+          style="
+            border: none;
+            overflow: hidden;
+            background: white;
+            border: 1px solid black;
+          "
+        ></iframe>
+      </div>
+    </div>
+    <!-- Facebook the last space -->
+  </body>
+</html>

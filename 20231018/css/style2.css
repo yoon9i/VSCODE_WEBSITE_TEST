@@ -1,0 +1,86 @@
+@charset 'UTF-8';
+ul,
+li {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+}
+
+body,
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: block;
+  background: #fff;
+}
+
+/* ------------------- header ------------------- */
+
+#header {
+  background: #65d88c;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* header 로고 */
+
+#header-logo-left {
+  display: flex;
+}
+
+#header-logo-left li {
+  background: #fff;
+  width: 200px;
+  height: 60px;
+}
+
+/* header 카테고리 */
+
+#header-right ul {
+  display: flex;
+}
+
+#header-right li {
+  background: #fff;
+  box-sizing: border-box;
+  margin: 10px;
+  width: 100px;
+  height: 30px;
+}
+
+/* ------------------- 메인이미지 ------------------- */
+
+#main-img {
+  height: 980px;
+  display: flex;
+  background-color: gray;
+  border-radius: 0 0 0 490px;
+}
+
+/* 메인카테고리 */
+/* max-width: 1440px; */
+
+#main-category {
+  display: flex;
+  margin-top: 10%;
+  justify-content: space-around;
+}
+
+#main-category .category-content {
+  background: gray;
+  width: 330px;
+  height: 480px;
+  border-radius: 0 0 0 165px;
+}
+
+#main-category .category-content li {
+  margin-top: 10%;
+  box-sizing: content-box;
+  text-align: center;
+  background: #fff;
+}

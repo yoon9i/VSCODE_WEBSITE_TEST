@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <?php
+$url = "https://graph.facebook.com/v18.0/721179366673292/feed?fields=attachments%2Cmessage%2Cpicture%2Clink%2Cname%2Ccaption%2Cdescription&access_token=EAAWe6ZBZCdgbEBO6lREAkZBJTbjIsFGZB2x61zn7sQ0ZC2I6q7oLht6hZBdvjYBRBrTboevG3InKqxZCSZAh3UqElMFhRd2M1A01phXXK2gcA823gZAiTG4bP69rhvmuRH3IRRxfK9KmjaHZBixfnW1WLBeC4gFZAoDNVwErIn0n6sg1eOzfUM40Vmy3w23BUQevg4ZCFVMFgPQj7txIOR46ELBMJfg8hOz4aZBVJrQuILCLZBRq7zimSdifLxjtNsZCIaJmAZDZD";
+
+$curl = curl_init($url);
+
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+
+$result = curl_exec($curl);
+
+if ($result === false) {
+    die('Curl error: ' . curl_error($curl));
+}
+
+curl_close($curl);
+
+$result = json_decode($result, true);
+
+print_r($result);
+?>
+  </body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      function renderFacebookPosts(response) {
+        console.log(response);
+
+        const postsContainer = document.getElementById("fb-posts");
+
+        // 이전 콘텐츠 지우기
+        postsContainer.innerHTML = "";
+
+        // HTML 동적 구조 업데이트
+        if (response && !response.error) {
+          response.data.forEach((post) => {
+            const postElement = document.createElement("div");
+            postElement.innerHTML = `
+              <div>
+                <p>${post.message}</p>
+                <img src="${post.picture}" alt="Post Image" />
+                <p>${post.description}</p>
+                <hr />
+              </div>
+            `;
+            postsContainer.appendChild(postElement);
+          });
+        }
+      }
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: "736987667781281",
+          cookie: true,
+          xfbml: true,
+          version: "v18.0",
+        });
+
+        // 여기서 FB.api 호출 추가
+        FB.api(
+          "/721179366673292/feed",
+          "GET",
+          {
+            fields: "attachments,message,picture,link,name,caption,description",
+          },
+          renderFacebookPosts
+        );
+      };
+
+      (function (d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/ko_KR/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, "script", "facebook-jssdk");
+    </script>
+    <title>그래프 API 테스트</title>
+  </head>
+  <body>
+    <div id="facebook_area" style="background: black; text-align: center">
+      <div class="facebook_title">
+        <h2 align="center" style="color: white">Facebook</h2>
+      </div>
+      <div
+        class="facebook_contents"
+        align="center"
+        style="color: white; background: gray"
+      >
+        <div id="fb-posts">여기에 Graph API 를 통한 데이터가 들어가야함.</div>
+        <iframe
+          src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FModelEuropeanUnionKorea%2Fposts%2Fpfbid02r6GHviAgY7fXH4Y9gF1t3d74wrsvD3AJU6qTMt71Bo6PMUM15yNrWDqaNQnHLGM6l&show_text=true&width=500"
+          width="550"
+          height="674"
+          style="
+            border: none;
+            overflow: hidden;
+            background: white;
+            border: 1px solid gray;
+          "
+          scrolling="no"
+          frameborder="0"
+          allowfullscreen="true"
+          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+        ></iframe>
+        <iframe
+          src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FModelEuropeanUnionKorea%2Fposts%2Fpfbid02b7iWUtm5DRSpoH2ns7EJHc7NSCtJNtPCFfvZTbi8wkvYSXzS1FLJCCgFeQnJLA9nl&show_text=true&width=500"
+          width="550"
+          height="674"
+          style="
+            border: none;
+            overflow: hidden;
+            background: white;
+            border: 1px solid gray;
+          "
+          scrolling="no"
+          frameborder="0"
+          allowfullscreen="true"
+          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+        ></iframe>
+      </div>
+    </div>
+  </body>
+</html>

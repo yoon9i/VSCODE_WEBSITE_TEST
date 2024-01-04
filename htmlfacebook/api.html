@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>페이스북 API</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js"></script>
+  </head>
+  <body>
+    <!------------------------------------ Facebook Starting space ------------------------------------>
+    <div id="facebook_area" style="background: black; text-align: center">
+      <div class="facebook_title">
+        <h2 align="center" style="color: white">Facebook</h2>
+      </div>
+      <div class="facebook_contents" align="center" style="background: white">
+        <div
+          id="facebook-feed"
+          style="display: flex; flex-direction: row"
+        ></div>
+        <script>
+          function getTimeDifferenceString(postTime) {
+            const now = new Date();
+            const postDate = new Date(postTime);
+            const timeDifference = now - postDate;
+            const daysDifference = Math.floor(
+              timeDifference / (1000 * 60 * 60 * 24)
+            );
+
+            if (daysDifference === 0) {
+              return "오늘";
+            } else if (daysDifference === 1) {
+              return "어제";
+            } else {
+              return `${daysDifference}일 전`;
+            }
+          }
+
+          function updateFacebookFeed() {
+            var pageId = "216684361876104";
+            var accessToken =
+              "EABhi7JQQ3vkBOZBVGqDKBtOKkA4aWoEZB9pr2NLfMSufysBj4KAzQQ0AfshykVD5lJzvBHvmzeL6BWDNYdgkZCbLGXS7yfciG30EmO3NOpK6JpyNhJ7jsqsjJZC7ilge9biGskClgKZBVvnnOWqVLHXSUJ99RWEnGyVVAy0ZCG07F8EtFdPtuS1AE1PrSYYHcZD";
+
+            $.ajax({
+              url: `https://graph.facebook.com/v18.0/${pageId}/posts`,
+              method: "GET",
+              data: {
+                fields: "created_time,message,message_tags,full_picture,id",
+                access_token: accessToken,
+                limit: 5,
+              },
+              success: function (data) {
+                var feedContainer = $("#facebook-feed");
+                feedContainer.empty(); // 기존 내용 비우기
+
+                for (var i = 0; i < Math.min(5, data.data.length); i++) {
+                  var post = data.data[i];
+                  var postContainer = $("<div>")
+                    .css("margin", "20px auto")
+                    .css("border", "2px solid gray")
+                    .css("borderRadius", "5px")
+                    .css("width", "500px")
+                    .css("max-width", "100%")
+                    .css("height", "auto")
+                    .css("position", "relative");
+
+                  // 이미지가 있는 경우에만 이미지 추가
+                  if (post.full_picture) {
+                    // 이미지 크기 500 으로 고정
+                    var imageElement = $("<img>")
+                      .attr("src", post.full_picture)
+                      .css("width", "500px");
+
+                    // IIFE 를 사용하여 클로저 생성
+                    (function (postId) {
+                      imageElement.click(function () {
+                        window.open(
+                          "https://www.facebook.com/" + postId,
+                          "_blank"
+                        );
+                      });
+                    })(post.id);
+
+                    var imageContainer = $("<div>").append(imageElement);
+
+                    postContainer.append(imageContainer);
+
+                    // 작성 시간 추가
+                    if (post.created_time) {
+                      var timeDifferenceString = getTimeDifferenceString(
+                        post.created_time
+                      );
+                      var timeElement = $("<p>")
+                        .text("작성 시간: " + timeDifferenceString)
+                        .css({
+                          position: "absolute",
+                          top: "2px",
+                          right: "10px",
+                          color: "white",
+                          background: "#C0C0C0",
+                          padding: "5px",
+                          borderRadius: "5px",
+                        });
+
+                      postContainer.append(timeElement);
+                    }
+
+                    // 텍스트 추가
+                    if (post.message) {
+                      // 특수문자가 들어가 있다면 enter를 사용하여 정렬
+                      var formattedMessage = post.message.replace(
+                        /(\S)/,
+                        "\n$1"
+                      );
+                      var postContent = $("<p>").html(
+                        formattedMessage.replace(/\n/g, "<br>")
+                      ); // HTML 엔터 추가
+
+                      // IIFE를 사용하여 클로저 생성
+                      (function (postId) {
+                        postContent.click(function () {
+                          window.open(
+                            "https://www.facebook.com/" + postId,
+                            "_blank"
+                          );
+                        });
+                      })(post.id);
+
+                      postContainer.append(postContent);
+                    }
+                  }
+
+                  feedContainer.append(postContainer);
+                }
+              },
+              error: function (error) {
+                console.error("Failed to fetch Facebook data:", error);
+              },
+            });
+          }
+
+          // 초기 로딩 시 업데이트 실행
+          updateFacebookFeed();
+
+          // 하루마다 업데이트 실행
+          setInterval(updateFacebookFeed, 24 * 60 * 60 * 1000);
+        </script>
+      </div>
+    </div>
+  </body>
+</html>

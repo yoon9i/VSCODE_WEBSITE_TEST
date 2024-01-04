@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>내 웹사이트</title>
+
+    <!-- Content Security Policy 설정 -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' https://connect.facebook.net 'unsafe-inline'; style-src 'self' https://connect.facebook.net 'unsafe-inline';"
+    />
+  </head>
+  <body>
+    <!-- Facebook 시작 공간 -->
+    <script src="https://connect.facebook.net/en_US/sdk.js"></script>
+    <script>
+      window.fbAsyncInit = function () {
+        FB.init({
+          xfbml: true,
+          version: "v18.0",
+        });
+
+        document
+          .getElementById("yourLoginButton")
+          .addEventListener("click", function () {
+            FB.login(
+              function (response) {
+                if (response.authResponse) {
+                  // 페이지 엑세스 토큰 가져오기
+                  FB.api("/me/accounts", "GET", {}, function (response) {
+                    if (response.data.length > 0) {
+                      var pageAccessToken = response.data[0].access_token;
+
+                      // 상단 3개의 포스트 가져오기
+                      var postUrls = [
+                        "https://www.facebook.com/ggmwedy/posts/pfbid0T1nZk331sUfq6nSFV2CCvmiPDC2pfN7FzKT1nQJavkzKPJGHftVkrUsYe2RqEqSDl",
+                        "https://www.facebook.com/ggmwedy/posts/pfbid02KhBDN5NCmwWE8YR5cz7yQGJmZDLYNzb9P5m7rv7DkS1QmB6u1eCC6qwRqEoJiCHhl",
+                        "https://www.facebook.com/ggmwedy/posts/pfbid02vLkYv8c1sAzZwZxzMeqTkXKGfUp51xUQTLswFhaYU22i3R9ZEMynHgtnUrTdMoyml",
+                      ];
+
+                      postUrls.forEach(function (postUrl) {
+                        // 페이지 엑세스 토큰을 사용하여 게시물 가져오기
+                        FB.api(
+                          "/v18.0/",
+                          "GET",
+                          {
+                            id: postUrl,
+                            access_token: pageAccessToken,
+                          },
+                          function (postResponse) {
+                            if (!postResponse.error) {
+                              // 게시물이 정상적으로 가져와졌을 경우, fb-post에 추가 또는 다른 동작 수행
+                              console.log(postResponse);
+                              var fbPost = document.createElement("div");
+                              fbPost.innerHTML = postResponse.html;
+                              document
+                                .getElementById("facebook_area")
+                                .appendChild(fbPost);
+                            } else {
+                              console.error(postResponse.error);
+                            }
+                          }
+                        );
+                      });
+                    } else {
+                      console.error("No page found for the user.");
+                    }
+                  });
+                } else {
+                  console.error("User is not logged in.");
+                }
+              },
+              { scope: "manage_pages" }
+            ); // 페이지를 관리하기 위한 권한 추가
+          });
+      };
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // 클릭 이벤트를 감지하는 함수
+        function handlePostClick(event) {
+          // 클릭된 요소가 'fb-post' 클래스를 가지고 있는지 확인
+          if (event.target.classList.contains("fb-post")) {
+            // 클릭된 게시물의 URL 가져오기
+            var postUrl = event.target.dataset.href;
+
+            // 해당 URL로 이동
+            window.location.href = postUrl;
+          }
+        }
+
+        // 클릭 이벤트 리스너 추가
+        document.body.addEventListener("click", handlePostClick);
+      });
+
+      // SDK 로드 스크립트
+      (function (d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, "script", "facebook-jssdk");
+    </script>
+
+    <div id="facebook_area" style="background: black">
+      <div class="facebook_title">
+        <h2 align="center" style="color: white">Facebook</h2>
+      </div>
+      <div class="facebook_contents" align="center" style="color: white">
+        <div style="background: #939393">
+          <button id="yourLoginButton">로그인</button>
+          <!-- 여기에 게시물이 추가될 것입니다 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Facebook 마지막 공간 -->
+  </body>
+</html>

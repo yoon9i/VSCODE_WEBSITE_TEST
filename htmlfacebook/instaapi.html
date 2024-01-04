@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="/absolute/path/to/instafeed.min.js" type="text/html"></script>
+    <title>insta</title>
+  </head>
+  <body>
+    <div id="instagram_area">
+      <div class="instagram_title">
+        <h2 align="center">Instagram</h2>
+      </div>
+      <div class="instagram_contents" align="center">
+        <div id="instagram-feed"></div>
+        <button id="instagram-button">Instagram 에서 전체 게시물 보기</button>
+        <script>
+          // 사용자의 액세스 토큰을 여기에 입력
+          var accessToken =
+            "IGQWRNeW8yZAEgtYlN1bzJVRmVJMWstX3FkenItc0FubFc1dFdDVlg5VlItcnViTzlkVUpfS2VadGk5WGRtLUMxQi1mdGEtWmZATY0dYTnNzSTdvLTUxY0tlanZAPNXo0YlJUejZAWU3p6eW1vVlRvUldlcFRVbHRzQ0EZD";
+
+          // Instagram Graph API 엔드포인트
+          var apiUrl =
+            "https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink&access_token=" +
+            accessToken;
+
+          // Instagram 게시물을 가져오고 표시하는 함수
+          function fetchInstagramPosts() {
+            $.ajax({
+              url: apiUrl,
+              method: "GET",
+              dataType: "JSON",
+              success: function (response) {
+                console.log(response);
+
+                var maxPosts = Math.min(response.data.length, 16); // 최대 포스트 수 제한
+                var instaFeed = $("#instagram-feed");
+
+                for (var i = 0; i < maxPosts; i += 4) {
+                  var $instaRow = $("<div>").addClass("insta-row");
+
+                  for (var j = 0; j < 4 && i + j < maxPosts; j++) {
+                    var mediaUrl = response.data[i + j].media_url;
+                    var permalink = response.data[i + j]?.permalink;
+
+                    // 이미지에 링크 추가
+                    var $imageLink = $("<a>")
+                      .attr("href", permalink)
+                      .attr("target", "_blank");
+
+                    var $imageContainer = $("<div>")
+                      .addClass("insta-image-container")
+                      .append(
+                        $imageLink.append($("<img>").attr("src", mediaUrl))
+                      );
+
+                    // 클로저 문제 해결을 위해 IIFE (즉시 실행 함수) 사용
+                    (function (permalink) {
+                      $imageContainer.click(function () {
+                        window.open(permalink, "_blank");
+                      });
+                    })(permalink);
+
+                    $instaRow.append($imageContainer);
+                  }
+
+                  instaFeed.append($instaRow);
+                }
+              },
+              error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+              },
+            });
+          }
+
+          // 페이지 로드 시 Instagram 게시물 가져오기
+          fetchInstagramPosts();
+
+          // 인스타그램 페이지로 이동하는 버튼 클릭 이벤트 처리
+          $("#instagram-button").on("click", function () {
+            window.open("https://www.instagram.com/gogumawedding/", "_blank");
+          });
+        </script>
+      </div>
+      <div id="instagram_contents_bottom"></div>
+    </div>
+  </body>
+</html>

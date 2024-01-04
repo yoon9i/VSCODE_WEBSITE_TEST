@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <title>고구마웨딩페이스북가져오기</title>
+  <body>
+    <!-- Facebook Starting space -->
+    <script
+      async
+      defer
+      src="https://connect.facebook.net/en_US/sdk.js"
+    ></script>
+    <script>
+      window.fbAsyncInit = function () {
+        FB.init({
+          xfbml: true,
+          version: "v18.0",
+          appId: "736987667781281",
+        });
+
+        // Fetch latest posts
+        FB.api(
+          "/ggmwedy/posts",
+          {
+            fields: "link,message",
+            limit: 3,
+            access_token:
+              "EAAWe6ZBZCdgbEBOZBhEWIQMF1euqtfBgaIlKhLN2vAPd3mBTZCuuI5SDiA4taZB1NiMfAhfkS0IijLQXfhKMPkUzFg2K8pZAt65SWdV0mXrUZA0HSwfHgkaMOkOFbbSoRqdGFZCKBitmYifVoiOZAmXZCkY5DTCkTYuYmBXSj1CRQ1UjxdZCaPd5qfFs3vke7JZCKHs4w0g6yxIQADcS87p8DCUp7IZAqZC6xe6z0qElSk2SjU0JV7ZCEjMfcC6ta1kbK0xQGUZD",
+          },
+          function (response) {
+            if (response && !response.error) {
+              // Update the 'data-href' attribute of each post element
+              for (let i = 0; i < response.data.length; i++) {
+                const postUrl = response.data[i].link;
+                const postElement = document.querySelectorAll(".fb-post")[i];
+                postElement.setAttribute("data-href", postUrl);
+              }
+            }
+          }
+        );
+      };
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // 클릭 이벤트를 감지하는 함수
+        function handlePostClick(event) {
+          // 클릭된 요소가 'fb-post' 클래스를 가지고 있는지 확인
+          if (event.target.classList.contains("fb-post")) {
+            // 클릭된 게시물의 URL 가져오기
+            var postUrl = event.target.dataset.href;
+
+            // 해당 URL로 이동
+            window.location.href = postUrl;
+          }
+        }
+
+        // 클릭 이벤트 리스너 추가
+        document.body.addEventListener("click", handlePostClick);
+      });
+    </script>
+
+    <div id="facebook_area" style="background: black">
+      <div class="facebook_title">
+        <h2 align="center" style="color: white">Facebook</h2>
+      </div>
+      <div class="facebook_contents" align="center" style="color: white">
+        <div style="background: #939393">
+          <!-- 상단 3개의 포스트 -->
+          <div
+            class="fb-post"
+            data-href="https://www.facebook.com/ggmwedy/posts/pfbid0T1nZk331sUfq6nSFV2CCvmiPDC2pfN7FzKT1nQJavkzKPJGHftVkrUsYe2RqEqSDl"
+            data-width="500"
+          ></div>
+          <div
+            class="fb-post"
+            data-href="https://www.facebook.com/ggmwedy/posts/pfbid02KhBDN5NCmwWE8YR5cz7yQGJmZDLYNzb9P5m7rv7DkS1QmB6u1eCC6qwRqEoJiCHhl"
+            data-width="500"
+          ></div>
+          <div
+            class="fb-post"
+            data-href="https://www.facebook.com/ggmwedy/posts/pfbid02vLkYv8c1sAzZwZxzMeqTkXKGfUp51xUQTLswFhaYU22i3R9ZEMynHgtnUrTdMoyml"
+            data-width="500"
+          ></div>
+        </div>
+
+        <div style="background: #777777">
+          <!-- 하단 3개의 포스트 -->
+          <div
+            class="fb-post"
+            data-href="https://www.facebook.com/ggmwedy/posts/pfbid0NTVqMaaRDUUoPGmPkkXxUSqXDdoBPj8RDvKYHTy9YnMQZ2XvYw5vqqtPGNqMasuUl"
+            data-width="500"
+          ></div>
+          <div
+            class="fb-post"
+            data-href="https://www.facebook.com/ggmwedy/posts/pfbid02edPmQsLkd2nLa56bNRmWCnZd5eUsQQbSqqqfyvoxYGvuMFABtoek4XXyUrkqJcXAl"
+            data-width="500"
+          ></div>
+          <div
+            class="fb-post"
+            data-href="https://www.facebook.com/ggmwedy/posts/pfbid02ynpnDRH8e3RVk18QytNZR8p2W1EoKwyK68h6DQKvqH8LfAtaoZsyVrSn2hmc2UAjl"
+            data-width="500"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Facebook the last space -->
+  </body>
+</html>

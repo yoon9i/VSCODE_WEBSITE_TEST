@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Facebook Feed</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  </head>
+  <body>
+    <!-- Facebook Area -->
+    <div id="facebook_area" style="background: black; text-align: center">
+      <!-- Facebook title -->
+      <div class="facebook_title" style="color: white">Facebook</div>
+
+      <!-- Facebook Contents -->
+      <div class="facebook_contents" align="center" style="background: gray">
+        <div id="facebook-feed"></div>
+
+        <script>
+          function updateFacebookFeed() {
+            var pageId = "216684361876104";
+            var accessToken =
+              "EAAWe6ZBZCdgbEBOyN56b7Cm6uytSZBqMjUaEwsbBjaqLvOV0EVG0toDTx5ZCO5JQmvcbGmP26H2ZAn3r2gNUxjHaXKgSwHOqOs0dolY8xeJzbcGZA4w7XwLSLTJZAOkfOuuFtmugfOvdaJ44T9byZAZAbhLAW4ZCK05VsUICLwxpwxCuVVJTi6ZBiYHEWfZCNZCCjR0IDp83RALodjHHNbPqZAVy4tkekus6AWwEKgROz8K7mr1YpZBI5FdSQYLKANs3PgL9QZDZD";
+            var graphApiUrl = `https://graph.facebook.com/v18.0/${pageId}/feed?access_token=${accessToken}&limit=3`;
+
+            $.get(graphApiUrl, function (data) {
+              var feedContainer = $("#facebook-feed");
+              feedContainer.empty(); // 기존 내용 비우기
+
+              for (var i = 0; i < Math.min(3, data.data.length); i++) {
+                var post = data.data[i];
+                var postContent = $("<p>").text(post.message);
+                feedContainer.append(postContent);
+              }
+            });
+          }
+
+          // 초기 로딩 시 업데이트 실행
+          updateFacebookFeed();
+
+          // 5초마다 업데이트 실행
+          setInterval(updateFacebookFeed, 5000);
+        </script>
+      </div>
+    </div>
+  </body>
+</html>

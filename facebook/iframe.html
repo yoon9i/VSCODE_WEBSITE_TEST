@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      async
+      defer
+      src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2"
+    ></script>
+    <script>
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: "736987667781281",
+          cookie: true,
+          xfbml: true,
+          version: "v18.0",
+        });
+
+        // 여기서 FB.api 호출 추가
+        FB.api(
+          "/721179366673292/feed",
+          "GET",
+          {
+            fields: "attachments,message,picture,link,name,caption,description",
+          },
+          function (response) {
+            // 여기에 응답을 처리하는 코드 추가
+            console.log(response);
+
+            // 가져온 데이터를 페이지에 삽입
+            if (response && !response.error) {
+              const postsContainer = document.getElementById("fb-posts");
+
+              // 여기에서 response를 이용하여 데이터를 적절히 가공하고 HTML에 추가
+              response.data.forEach((post) => {
+                const postElement = document.createElement("div");
+                postElement.innerHTML = `
+                    <p>${post.message}</p>
+                    <img src="${post.picture}" alt="Post Image" />
+                    <p>${post.description}</p>
+                    <hr />
+                  `;
+                postsContainer.appendChild(postElement);
+              });
+            }
+          }
+        );
+      };
+
+      (function (d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/ko_KR/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, "script", "facebook-jssdk");
+    </script>
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- Facebook Starting space -->
+    <div id="facebook_area" style="background: black; text-align: center">
+      <div class="facebook_title">
+        <h2 align="center" style="color: white">Facebook</h2>
+      </div>
+      <div
+        class="facebook_contents"
+        align="center"
+        style="color: white; background: white; border: 1px solid gray"
+      >
+        <!-- <iframe
+          src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fggmwedy%2Fposts%2Fpfbid0T1nZk331sUfq6nSFV2CCvmiPDC2pfN7FzKT1nQJavkzKPJGHftVkrUsYe2RqEqSDl&show_text=true&width=500"
+          width="500"
+          height="674"
+          style="
+            border: none;
+            overflow: hidden;
+            background: white;
+            border: 1px solid gray;
+          "
+          scrolling="no"
+          frameborder="0"
+          allowfullscreen="true"
+          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+        ></iframe> -->
+        <div id="fb-posts"></div>
+        <iframe
+          src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FModelEuropeanUnionKorea%2Fposts%2Fpfbid02r6GHviAgY7fXH4Y9gF1t3d74wrsvD3AJU6qTMt71Bo6PMUM15yNrWDqaNQnHLGM6l&show_text=true&width=500"
+          width="500"
+          height="674"
+          style="
+            border: none;
+            overflow: hidden;
+            background: white;
+            border: 1px solid gray;
+          "
+          scrolling="no"
+          frameborder="0"
+          allowfullscreen="true"
+          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+        ></iframe>
+        <iframe
+          src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FModelEuropeanUnionKorea%2Fposts%2Fpfbid02b7iWUtm5DRSpoH2ns7EJHc7NSCtJNtPCFfvZTbi8wkvYSXzS1FLJCCgFeQnJLA9nl&show_text=true&width=500"
+          width="500"
+          height="674"
+          style="
+            border: none;
+            overflow: hidden;
+            background: white;
+            border: 1px solid gray;
+          "
+          scrolling="no"
+          frameborder="0"
+          allowfullscreen="true"
+          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+        ></iframe>
+      </div>
+    </div>
+
+    <!-- Facebook the last space -->
+  </body>
+</html>
